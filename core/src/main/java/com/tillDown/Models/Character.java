@@ -1,4 +1,4 @@
 package com.tillDown.Models;
 
-public enu Character {
+public enum Character {
 }

@@ -1,8 +1,19 @@
 package com.tillDown.lwjgl3;
 
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.lwjgl3.*;
 import com.tillDown.Main;
+import com.tillDown.Models.FileDropListener;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWDropCallback;
+import org.lwjgl.system.MemoryUtil;
+
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.*;
+import java.io.File;
+import java.util.List;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
@@ -11,8 +22,13 @@ public class Lwjgl3Launcher {
         createApplication();
     }
 
-    private static Lwjgl3Application createApplication() {
-        return new Lwjgl3Application(new Main(), getDefaultConfiguration());
+    private static void createApplication() {
+        Main game = new Main();
+        Lwjgl3ApplicationConfiguration config = getDefaultConfiguration();
+        config.setWindowListener(new FileDropListener());
+        Lwjgl3Application app = new Lwjgl3Application(game, getDefaultConfiguration());
+
+
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
@@ -27,11 +43,32 @@ public class Lwjgl3Launcher {
         //// If you remove the above line and set Vsync to false, you can get unlimited FPS, which can be
         //// useful for testing performance, but can also be very stressful to some hardware.
         //// You may also need to configure GPU drivers to fully disable Vsync; this can cause screen tearing.
-
+        configuration.setMaximized(true);
         configuration.setWindowedMode(640, 480);
         //// You can change these files; they are in lwjgl3/src/main/resources/ .
         //// They can also be loaded from the root of assets/ .
         configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
+        Lwjgl3WindowListener listener = new Lwjgl3WindowListener() {
+            @Override
+            public void created(Lwjgl3Window window) {
+            }
+
+            @Override
+            public void filesDropped(String[] files) {
+                Main.getMain().handleDroppedFiles(files);
+            }
+
+            // Other required methods
+            @Override public void iconified(boolean isIconified) {}
+            @Override public void maximized(boolean isMaximized) {}
+            @Override public void focusLost() {}
+            @Override public void focusGained() {}
+            @Override public boolean closeRequested() { return true; }
+            @Override public void refreshRequested() {}
+        };
+
+        // Set listener BEFORE creating application
+        configuration.setWindowListener(listener);
         return configuration;
     }
 }
