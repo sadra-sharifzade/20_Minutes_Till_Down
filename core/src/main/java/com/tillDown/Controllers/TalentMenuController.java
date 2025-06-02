@@ -17,9 +17,9 @@ public class TalentMenuController {
         this.view = view;
     }
 
-    public void showHerosInfo() {
+    public void showHeroesInfo() {
         Skin skin = GameAssetManager.getGameAssetManager().getSkin();
-        Dialog dialog = new Dialog("HEROS INFO", skin);
+        Dialog dialog = new Dialog("HEROES INFO", skin);
         dialog.pad(20);
         dialog.getContentTable().add(new Label(" Name ", skin)).center();
         dialog.getContentTable().add(new Label(" HP ", skin)).center();

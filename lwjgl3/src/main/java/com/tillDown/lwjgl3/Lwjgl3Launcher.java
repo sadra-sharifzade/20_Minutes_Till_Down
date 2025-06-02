@@ -1,19 +1,7 @@
 package com.tillDown.lwjgl3;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.*;
 import com.tillDown.Main;
-import com.tillDown.Models.FileDropListener;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWDropCallback;
-import org.lwjgl.system.MemoryUtil;
-
-import java.awt.*;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.dnd.*;
-import java.io.File;
-import java.util.List;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
@@ -25,7 +13,6 @@ public class Lwjgl3Launcher {
     private static void createApplication() {
         Main game = new Main();
         Lwjgl3ApplicationConfiguration config = getDefaultConfiguration();
-        config.setWindowListener(new FileDropListener());
         Lwjgl3Application app = new Lwjgl3Application(game, getDefaultConfiguration());
 
 
@@ -58,7 +45,6 @@ public class Lwjgl3Launcher {
                 Main.getMain().handleDroppedFiles(files);
             }
 
-            // Other required methods
             @Override public void iconified(boolean isIconified) {}
             @Override public void maximized(boolean isMaximized) {}
             @Override public void focusLost() {}
@@ -67,7 +53,6 @@ public class Lwjgl3Launcher {
             @Override public void refreshRequested() {}
         };
 
-        // Set listener BEFORE creating application
         configuration.setWindowListener(listener);
         return configuration;
     }

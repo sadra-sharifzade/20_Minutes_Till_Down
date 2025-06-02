@@ -15,7 +15,6 @@ public class SignupMenuContoller {
     }
 
     public void handleSignup(String username, String password) {
-        System.out.println("akas");
         if (Main.getUserByUsername(username)!=null) view.showError("Username is already taken!");
         else if (username.equals("guest")) view.showError("guest is a reserved username!");
         else if (password.length()<8) view.showError("Password must be at least 8 characters!");

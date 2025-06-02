@@ -20,7 +20,7 @@ import com.tillDown.Models.GameAssetManager;
 public class TalentMenuView implements Screen {
     private TalentMenuController controller;
     private Stage stage;
-    private TextButton herosInfoButton;
+    private TextButton heroesInfoButton;
     private TextButton cheatCodesInfoButton;
     private TextButton keyBindingsInfoButton;
     private TextButton abilitiesInfoButton;
@@ -30,7 +30,7 @@ public class TalentMenuView implements Screen {
         this.controller = new TalentMenuController(this);
         this.stage = new Stage(new FitViewport(1000,1000));
         skin = GameAssetManager.getGameAssetManager().getSkin();
-        herosInfoButton = new TextButton("Heros Info", skin);
+        heroesInfoButton = new TextButton("Heroes Info", skin);
         cheatCodesInfoButton = new TextButton("Cheat Codes", skin);
         keyBindingsInfoButton = new TextButton("Key Bindings", skin);
         abilitiesInfoButton = new TextButton("Abilities Info", skin);
@@ -42,10 +42,10 @@ public class TalentMenuView implements Screen {
                 TalentMenuView.this.dispose();
             }
         });
-        herosInfoButton.addListener(new ClickListener() {
+        heroesInfoButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                controller.showHerosInfo();
+                controller.showHeroesInfo();
             }
         });
 
@@ -79,7 +79,7 @@ public class TalentMenuView implements Screen {
         stage.addActor(table);
         table.add(new Label("Hints", skin, "title")).colspan(2);
         table.add(backButton).width(100).pad(20).row();
-        table.add(herosInfoButton).pad(10).row();
+        table.add(heroesInfoButton).pad(10).row();
         table.add(cheatCodesInfoButton).pad(10).row();
         table.add(keyBindingsInfoButton).pad(10).row();
         table.add(abilitiesInfoButton).pad(10).row();

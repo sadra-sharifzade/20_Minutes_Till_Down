@@ -46,7 +46,6 @@ public class SettingsController {
             String action = view.getWaitingForKeyAction();
             if (Main.getKeyBindings().containsValue(keycode)) return false;
             Main.getKeyBindings().put(action, keycode);
-            System.out.println(Main.getKeyBindings());
             for (Actor actor : view.getTable().getChildren()) {
                 if (actor instanceof TextButton) {
                     TextButton btn = (TextButton) actor;

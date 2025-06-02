@@ -131,7 +131,7 @@ public class SettingsView implements Screen {
         table.add(sfxCheckbox).left().pad(10);
         table.add(autoReloadCheckbox).center().pad(10);
         table.add(blackAndWhiteCheckbox).right().pad(10).row();
-
+        int cnt = 1;
         for (String action : Main.getKeyBindings().keySet()) {
             String keyName = Input.Keys.toString(Main.getKeyBindings().get(action));
             final TextButton keyButton = new TextButton(keyName, skin);
@@ -150,7 +150,8 @@ public class SettingsView implements Screen {
 
 
             table.add(new Label(action, skin)).pad(10);
-            table.add(keyButton).pad(10).row();
+            table.add(keyButton).pad(10);
+            if (cnt++%2 == 0) table.row();
         }
         stage.addListener(new InputListener() {
             @Override

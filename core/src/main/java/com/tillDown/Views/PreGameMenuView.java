@@ -51,7 +51,8 @@ public class PreGameMenuView implements Screen {
         startGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //todo start game
+                Main.setGameTime(timeDropDown.getSelected());
+                Main.getMain().setScreen(new GameView(heroDropDown.getSelected(),weaponDropDown.getSelected()));
                 PreGameMenuView.this.dispose();
             }
         });

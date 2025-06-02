@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.tillDown.Controllers.SignupMenuContoller;
+import com.tillDown.Models.GameAssetManager;
 import com.tillDown.Models.Player;
 import com.tillDown.Models.User;
 import com.tillDown.Views.MainMenuView;
@@ -66,7 +67,7 @@ public class Main extends Game{
         Main.isAutoReloadEnabled = isAutoReloadEnabled;
     }
     public static boolean isBlackAndWhiteEnabled() {return isBlackAndWhiteEnabled;}
-    public static void setIsBlackAndWhiteEnabled(boolean isBlackAndWhiteEnabled) {}
+    public static void setIsBlackAndWhiteEnabled(boolean isBlackAndWhiteEnabled) {Main.isBlackAndWhiteEnabled = isBlackAndWhiteEnabled;}
 
     public static boolean isSFXEnabled() {return isSFXEnabled;}
 
@@ -88,6 +89,8 @@ public class Main extends Game{
         Main.keyBindings = keyBindings;
     }
 
+    public static ShaderProgram getGrayscaleShader() {return grayscaleShader;}
+
     public static void addUser(User user) {
         users.add(user);
     }
@@ -96,6 +99,7 @@ public class Main extends Game{
         //TODO load users from json
         main = this;
         batch = new SpriteBatch();
+        GameAssetManager.getGameAssetManager().load();
         setScreen(new SignupMenuView());
         currentMusic = Gdx.audio.newMusic(Gdx.files.internal("musics/Pretty Dungeon.wav"));
         currentMusic.setLooping(true);
@@ -105,12 +109,13 @@ public class Main extends Game{
             Gdx.files.internal("shaders/default.vert"),
             Gdx.files.internal("shaders/grayscale.frag")
         );
-        System.out.println(grayscaleShader.isCompiled());
         keyBindings = new HashMap<>();
         keyBindings.put("Move Left", Input.Keys.A);
         keyBindings.put("Move Right", Input.Keys.D);
         keyBindings.put("Move Up", Input.Keys.W);
         keyBindings.put("Move Down", Input.Keys.S);
+        keyBindings.put("Reload", Input.Keys.R);
+        keyBindings.put("Auto-Aim", Input.Keys.SPACE);
     }
     @Override
     public void render() {
@@ -120,6 +125,7 @@ public class Main extends Game{
     @Override
     public void dispose() {
         batch.dispose();
+        GameAssetManager.getGameAssetManager().dispose();
     }
 
     public static Main getMain() {
