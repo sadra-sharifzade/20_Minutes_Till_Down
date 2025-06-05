@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tillDown.Main;
 import com.tillDown.Views.AbilityView;
 import com.tillDown.Views.GameView;
@@ -33,21 +34,57 @@ public class Player {
     private float runTime = 0f;
     private float invincibleTime = 0f;
     private boolean isInvincible = false;
+    private float x,y,circleX,circleY;
+    @JsonIgnore
     private Sprite sprite;
+    @JsonIgnore
     private Sprite circleSprite;
+    @JsonIgnore
     private Animation<TextureRegion> idleAnimation;
+    @JsonIgnore
     private Animation<TextureRegion> runAnimation;
+    @JsonIgnore
     private Animation<TextureRegion> heartAnimation;
+    @JsonIgnore
     private Weapon weapon;
+    @JsonIgnore
     private Vector2 position = new Vector2();
     private float speed = 0f;
+    @JsonIgnore
     private List<Sprite> hearts = new ArrayList<>();
+    @JsonIgnore
     private List<Sprite> ammos = new ArrayList<>();
     private List<String> gainedAbilities =new ArrayList<>();
+    @JsonIgnore
     private Texture emptyHeart;
     private float heartTime = 0f;
     public List<String> getGainedAbilities() {return gainedAbilities;}
-
+    public Weapon getWeapon() {return weapon;}
+    public void beforeSave(){
+        x = position.x;
+        y = position.y;
+        circleX = circleSprite.getX();
+        circleY = circleSprite.getY();
+    }
+    public void reInitialize(Weapon weapon) {
+        idleAnimation = GameAssetManager.getGameAssetManager().getIdleAnimation(characterName);
+        runAnimation = GameAssetManager.getGameAssetManager().getRunAnimation(characterName);
+        heartAnimation = GameAssetManager.getGameAssetManager().getHeartAnimation();
+        sprite = new Sprite(idleAnimation.getKeyFrame(idleTime));
+        sprite.setPosition(x, y);
+        circleSprite = new Sprite(GameAssetManager.getGameAssetManager().getCircleTexture());
+        circleSprite.setPosition(circleX, circleY);
+        circleSprite.setAlpha(0.5f);
+        position = new Vector2(x,y);
+        this.weapon = weapon;
+        emptyHeart = GameAssetManager.getGameAssetManager().getEmptyHeartTexture();
+        for (int i = 0; i < maxHp; i++) {
+            hearts.add(new Sprite(heartAnimation.getKeyFrame(0)));
+        }
+        for (int i = 0; i < weapon.getMaxAmmo(); i++) {
+            ammos.add(new Sprite(GameAssetManager.getGameAssetManager().getAmmoTexture()));
+        }
+    }
     public void increaseMaxHp() {
         maxHp++;
         hp++;
@@ -59,7 +96,7 @@ public class Player {
     public int getHp() {return hp;}
 
     public void setHp(int hp) {this.hp = hp;}
-
+    public Player(){}
     public Player(String name, Weapon weapon) {
         this.weapon = weapon;
         circleSprite = new Sprite(GameAssetManager.getGameAssetManager().getCircleTexture());
@@ -161,6 +198,7 @@ public class Player {
         sprite.setPosition(position.x, position.y);
         updateHearts();
         updateAmmos();
+        System.out.println(position.x + " " + position.y);
     }
 
     public void updateAmmos() {
@@ -199,7 +237,6 @@ public class Player {
     public float getY() {
         return position.y + sprite.getHeight() / 2;
     }
-
     public Rectangle getBounds() {
         return sprite.getBoundingRectangle();
     }

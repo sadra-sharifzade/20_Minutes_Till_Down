@@ -24,6 +24,9 @@ import com.tillDown.Controllers.SignupMenuContoller;
 import com.tillDown.Main;
 import com.tillDown.Models.GameAssetManager;
 
+import java.io.File;
+import java.io.IOException;
+
 
 public class SettingsView implements Screen {
     private Stage stage;
@@ -187,6 +190,13 @@ public class SettingsView implements Screen {
 
     @Override
     public void dispose() {
+        File directory = new File("userData/"+ Main.getCurrentUser().getId() );
+        if (!directory.exists()) directory.mkdir();
+        try {
+            Main.save("userData/"+Main.getCurrentUser().getId()+"/settings.json");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         stage.dispose();
     }
 

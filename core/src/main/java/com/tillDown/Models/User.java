@@ -8,8 +8,6 @@ import java.util.List;
 public class User {
     @JsonIgnore
     private static int idCounter = 0;
-    @JsonIgnore
-    private static int savedGamesCounter = 0;
     private int id;
     private int savedGameId = 0;
     private String username;
@@ -30,10 +28,7 @@ public class User {
         id = ++idCounter;
     }
 
-
-    public int getSavedGameId() {return savedGameId;}
-
-    public void setSavedGameId(int savedGameId) {this.savedGameId = savedGameId;}
+    public static void setIdCounter(int i) {idCounter=i;}
 
     public String getAnswerToSecurityQuestion() {return answerToSecurityQuestion;}
 

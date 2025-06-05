@@ -23,9 +23,23 @@ public class WeaponController {
     private static ArrayList<Bullet> enemyBullets = new ArrayList<>();
     private static ArrayList<Bullet> removedEnemyBullets = new ArrayList<>();
     private float autoAimShootTime = 0f;
-    public WeaponController(Weapon weapon,Player player) {
+
+    public static ArrayList<Bullet> getPlayerBullets() {return playerBullets;}
+
+    public static void setPlayerBullets(ArrayList<Bullet> playerBullets) {
+        WeaponController.playerBullets = playerBullets;
+    }
+
+    public static ArrayList<Bullet> getEnemyBullets() {return enemyBullets;}
+
+    public static void setEnemyBullets(ArrayList<Bullet> enemyBullets) {
+        WeaponController.enemyBullets = enemyBullets;
+    }
+
+    public WeaponController(Weapon weapon, Player player,boolean isNew) {
         this.weapon = weapon;
         this.player = player;
+        if(!isNew) return;
         playerBullets.clear();
         removedPlayerBullets.clear();
         enemyBullets.clear();

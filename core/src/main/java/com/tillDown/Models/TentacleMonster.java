@@ -13,4 +13,12 @@ public class TentacleMonster extends Enemy{
         hp=25;
         speed=100;
     }
+    public TentacleMonster() {}
+    @Override
+    public void reInitialize() {
+        super.reInitialize();
+        animation = GameAssetManager.getGameAssetManager().getEnemyAnimations("tentacle");
+        sprite = new Sprite(animation.getKeyFrame(0));
+        sprite.setPosition(x, y);
+    }
 }

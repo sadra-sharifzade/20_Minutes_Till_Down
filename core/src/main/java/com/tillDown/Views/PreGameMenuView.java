@@ -20,6 +20,8 @@ import com.tillDown.Controllers.PreGameMenuController;
 import com.tillDown.Controllers.SettingsController;
 import com.tillDown.Main;
 import com.tillDown.Models.GameAssetManager;
+import com.tillDown.Models.Player;
+import com.tillDown.Models.Weapon;
 
 public class PreGameMenuView implements Screen {
     private Stage stage;
@@ -52,7 +54,8 @@ public class PreGameMenuView implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Main.setGameTime(timeDropDown.getSelected());
-                GameView view = new GameView(heroDropDown.getSelected(),weaponDropDown.getSelected());
+                Weapon weapon = new Weapon(weaponDropDown.getSelected());
+                GameView view = new GameView(new Player(heroDropDown.getSelected(), weapon), weapon,true);
                 Main.getMain().setScreen(view);
                 Main.setGameView(view);
                 PreGameMenuView.this.dispose();

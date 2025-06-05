@@ -86,6 +86,14 @@ public class GameAssetManager {
             case "levelUp": levelUpSound.play(); break;
         }
     }
+    public Texture getWeaponTexture(String weaponName){
+        switch (weaponName){
+            case "revolver": return revolverTexture;
+            case "smg": return smgTexture;
+            case "shotgun": return shotgunTexture;
+        }
+        return null;
+    }
     public Texture getEmptyHeartTexture() {return emptyHeartTexture;}
 
     public Texture getOrbTexture() {return orbTexture;}

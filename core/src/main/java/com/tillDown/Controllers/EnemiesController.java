@@ -22,8 +22,14 @@ public class EnemiesController {
     private boolean isElderSpawned = false;
     private OrthographicCamera camera;
     private final int time = Main.getGameTime() * 60;
-    public EnemiesController(OrthographicCamera camera) {
+
+    public static ArrayList<Enemy> getEnemies() {return enemies;}
+
+    public static void setEnemies(ArrayList<Enemy> enemies) {EnemiesController.enemies = enemies;}
+
+    public EnemiesController(OrthographicCamera camera,boolean isNew) {
         this.camera = camera;
+        if(!isNew) return;
         enemies.clear();
         removedEnemies.clear();
         ThreadLocalRandom random = ThreadLocalRandom.current();

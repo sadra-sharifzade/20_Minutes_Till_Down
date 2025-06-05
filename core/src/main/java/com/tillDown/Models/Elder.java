@@ -13,6 +13,15 @@ public class Elder extends Enemy{
         hp = 400;
         speed = 20;
     }
+    public Elder() {}
+    @Override
+    public void reInitialize() {
+        super.reInitialize();
+        animation = GameAssetManager.getGameAssetManager().getEnemyAnimations("elder");
+        sprite = new Sprite(animation.getKeyFrame(0));
+        sprite.setPosition(x, y);
+    }
+
     @Override
     public void update(float playerX,float playerY, float delta) {
         super.update(playerX, playerY, delta);

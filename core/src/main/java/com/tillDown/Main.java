@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tillDown.Controllers.SignupMenuContoller;
 import com.tillDown.Models.GameAssetManager;
+import com.tillDown.Models.GameSettingData;
 import com.tillDown.Models.Player;
 import com.tillDown.Models.User;
 import com.tillDown.Views.GameView;
@@ -42,6 +43,8 @@ public class Main extends Game{
     private static int gameTime;
     private static boolean isAutoAimEnabled = false;
     private static boolean isBossFight = false;
+    private static float remainingTime = 0;
+    private static ObjectMapper mapper = new ObjectMapper();
 
     public static boolean isBossFight() {return isBossFight;}
 
@@ -111,6 +114,37 @@ public class Main extends Game{
     public static void setGameView(GameView view) {gameView=view;}
     public static GameView getGameView() {return gameView;}
 
+    public static ObjectMapper getMapper() {return mapper;}
+    public static void save(String filepath) throws IOException {
+        GameSettingData data = new GameSettingData();
+        data.isSFXEnabled = isSFXEnabled;
+        data.isAutoReloadEnabled = isAutoReloadEnabled;
+        data.isBlackAndWhiteEnabled = isBlackAndWhiteEnabled;
+        data.keyBindings = keyBindings;
+        data.heroName = heroName;
+        data.weaponName = weaponName;
+        data.gameTime = gameTime;
+        data.remainingTime = gameView==null? 0:gameView.getRemainingTime();
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(new File(filepath), data);
+    }
+    public static void load(String filepath) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        GameSettingData data = mapper.readValue(new File(filepath), GameSettingData.class);
+
+        isSFXEnabled = data.isSFXEnabled;
+        isAutoReloadEnabled = data.isAutoReloadEnabled;
+        isBlackAndWhiteEnabled = data.isBlackAndWhiteEnabled;
+        keyBindings = data.keyBindings;
+        heroName = data.heroName;
+        weaponName = data.weaponName;
+        gameTime = data.gameTime;
+        remainingTime = data.remainingTime;
+    }
+
+    public static float getRemainingTime() {return remainingTime;}
+
     @Override
     public void create() {
         ObjectMapper mapper = new ObjectMapper();
@@ -119,6 +153,7 @@ public class Main extends Game{
         } catch (IOException ignored) {
 
         }
+        User.setIdCounter(users.size());
         main = this;
         batch = new SpriteBatch();
         GameAssetManager.getGameAssetManager().load();

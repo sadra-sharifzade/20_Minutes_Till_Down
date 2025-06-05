@@ -74,12 +74,7 @@ public class PauseMenuView implements Screen {
         quitAndSaveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    mapper.writeValue(new File("savedGame.json"), Main.getGameView());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                controller.saveCurrentGame();
                 Main.getMain().setScreen(new MainMenuView());
                 PauseMenuView.this.dispose();
             }

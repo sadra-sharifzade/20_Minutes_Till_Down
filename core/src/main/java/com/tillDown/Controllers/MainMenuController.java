@@ -6,14 +6,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tillDown.Main;
-import com.tillDown.Models.User;
+import com.tillDown.Models.*;
 import com.tillDown.Views.GameView;
 import com.tillDown.Views.MainMenuView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainMenuController {
     private MainMenuView view;
@@ -24,7 +28,7 @@ public class MainMenuController {
 
     public void resumeLastGame(Skin skin, Stage stage) {
         User user = Main.getCurrentUser();
-        if (user.getSavedGameId()==0) {
+        if (!(new File("userData/"+user.getId()).exists())) {
             Dialog errorDialog = new Dialog("Error", skin);
             errorDialog.text("You Don't Have A Saved Game");
             TextButton okButton = new TextButton("OK", skin);
@@ -39,9 +43,28 @@ public class MainMenuController {
             );
             errorDialog.show(stage);
         }
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = Main.getMapper();
+        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         try {
-            Main.setGameView(mapper.readValue(new File("savedGame.json"), GameView.class));
+            int id = user.getId();
+            Weapon weapon = mapper.readValue(new File("userData/"+id+"/weapon.json"), Weapon.class);
+            weapon.reInitialize();
+            Player player = mapper.readValue(new File("userData/"+id+"/player.json"), Player.class);
+            player.reInitialize(weapon);
+            EnemyListWrapper wrapper = mapper.readValue(new File("userData/"+id+"/enemies.json"), EnemyListWrapper.class);
+            EnemiesController.setEnemies(wrapper.getEnemies());
+            for (Enemy e : EnemiesController.getEnemies()) e.reInitialize();
+            ArrayList<Orb> orbs =mapper.readValue(new File("userData/"+id+"/orbs.json"), new TypeReference<ArrayList<Orb>>() {});
+            for (Orb o : orbs) o.reInitialize();
+            ArrayList<Bullet> playerBullets = mapper.readValue(new File("userData/"+id+"/playerBullets.json"), new TypeReference<ArrayList<Bullet>>() {});
+            for (Bullet b : playerBullets) b.reInitialize();
+            ArrayList<Bullet> enemyBullets = mapper.readValue(new File("userData/"+id+"/enemyBullets.json"), new TypeReference<ArrayList<Bullet>>() {});
+            for (Bullet b: enemyBullets) b.reInitialize();
+            OrbsController.setOrbs(orbs);
+            WeaponController.setEnemyBullets(enemyBullets);
+            WeaponController.setPlayerBullets(playerBullets);
+            Main.setGameView(new GameView(player,weapon,false));
             Main.getMain().setScreen(Main.getGameView());
         } catch (IOException e) {
             throw new RuntimeException(e);

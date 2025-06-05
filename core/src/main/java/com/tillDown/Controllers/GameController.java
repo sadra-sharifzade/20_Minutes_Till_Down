@@ -8,18 +8,20 @@ import com.tillDown.Models.Weapon;
 import com.tillDown.Views.EndView;
 import com.tillDown.Views.GameView;
 
+import java.io.IOException;
+
 public class GameController {
     private GameView view;
     private PlayerController playerController;
     private WeaponController weaponController;
     private EnemiesController enemiesController;
     private OrbsController orbsController;
-    public GameController(GameView view, Player player, Weapon weapon) {
+    public GameController(GameView view, Player player, Weapon weapon,boolean isNew) {
         this.view = view;
         playerController = new PlayerController(player);
-        weaponController = new WeaponController(weapon,player);
-        enemiesController = new EnemiesController(view.getCamera());
-        orbsController = new OrbsController();
+        weaponController = new WeaponController(weapon,player,isNew);
+        enemiesController = new EnemiesController(view.getCamera(),isNew);
+        orbsController = new OrbsController(isNew);
     }
     public void update(float delta) {
         weaponController.update(delta);

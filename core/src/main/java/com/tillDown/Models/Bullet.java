@@ -7,17 +7,19 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tillDown.Controllers.WeaponController;
 
 public class Bullet {
     private Vector2 position;
     private Vector2 direction;
     private float speed;
+    @JsonIgnore
     private Sprite sprite;
     private int damage;
     private float playerCollidedTime = 0f;
     private boolean isPlayerCollided = false;
-
+    public Bullet(){}
     public Bullet(float startX, float startY, float targetX, float targetY, int damage,int speed,boolean isPlayer) {
         sprite = new Sprite(GameAssetManager.getGameAssetManager().getBulletTexture());
         sprite.setSize(20 , 20);
@@ -27,6 +29,11 @@ public class Bullet {
         this.speed = speed;
         this.damage = damage;
         this.sprite.setPosition(startX, startY);
+    }
+    public void reInitialize() {
+        sprite = new Sprite(GameAssetManager.getGameAssetManager().getBulletTexture());
+        sprite.setSize(20 , 20);
+        sprite.setPosition(position.x, position.y);
     }
     public Rectangle getBounds() {
         return sprite.getBoundingRectangle();

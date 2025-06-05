@@ -32,7 +32,6 @@ public class SignupMenuContoller {
             view.disableButtons();
             view.showError("Signup successful! Please answer the security question.");
             view.visibleSecurityQuestion("where were you born?");
-
         }
     }
     public void loginAsGuest() {

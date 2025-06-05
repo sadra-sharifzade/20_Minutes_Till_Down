@@ -44,24 +44,27 @@ public class GameView implements Screen, InputProcessor {
     public int getElapsedTime() {
         return (int) (Main.getGameTime()*60-timeRemaining);
     }
+
+    public float getRemainingTime() {return timeRemaining;}
+
     public GameController getController() {return controller;}
     public GameView(){}
-    public GameView(String characterName, String weaponName) {
+    public GameView(Player player, Weapon weapon,boolean isNew) {
         GameAssetManager.changeCursor();
         skin = GameAssetManager.getGameAssetManager().getSkin();
         background = GameAssetManager.getGameAssetManager().getBackground();
         MAP_WIDTH = background.getWidth();
         MAP_HEIGHT = background.getHeight();
         camera = new OrthographicCamera();
-        Weapon weapon = new Weapon(weaponName);
-        this.controller = new GameController(this, new Player(characterName, weapon), weapon);
-        timeRemaining = Main.getGameTime() * 60;
+        this.controller = new GameController(this, player,weapon,isNew);
+        if(isNew) timeRemaining = Main.getGameTime() * 60;
+        else timeRemaining = Main.getRemainingTime();
         camera.zoom = 0.5f;
         gameViewport = new ScreenViewport(camera);
         stage = new Stage(gameViewport);
         Gdx.input.setInputProcessor(this);
         camera.position.set(MAP_WIDTH / 2f, MAP_HEIGHT / 2f, 0);
-        controller.getPlayer().setPosition(MAP_WIDTH / 2f, MAP_HEIGHT / 2f);
+        if(isNew) controller.getPlayer().setPosition(MAP_WIDTH / 2f, MAP_HEIGHT / 2f);
         camera.update();
         hudCamera = new OrthographicCamera();
         hudViewport = new ScreenViewport(hudCamera);
