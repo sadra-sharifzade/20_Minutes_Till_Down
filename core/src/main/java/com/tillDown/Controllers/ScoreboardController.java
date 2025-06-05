@@ -72,7 +72,7 @@ public class ScoreboardController {
         }
     }
 
-    private Comparator<User> getComparator(String type) {
+    public Comparator<User> getComparator(String type) {
         switch (type) {
             case "Score" :return Comparator.comparingInt(User::getScore).reversed();
             case "Kills" :return Comparator.comparingInt(User::getNumKills).reversed();

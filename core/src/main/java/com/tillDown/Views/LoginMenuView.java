@@ -21,6 +21,7 @@ public class LoginMenuView implements Screen {
     private Label errorLabel;
     private TextButton loginButton;
     private TextButton forgetPasswordButton;
+    private TextButton backToSignupButton;
     private Label questionLabel;
     private TextField securityQuestionField;
     private TextButton confirmButton;
@@ -32,6 +33,7 @@ public class LoginMenuView implements Screen {
         passwordField = new TextField("", skin);
         loginButton = new TextButton("Login", skin);
         forgetPasswordButton = new TextButton("Forget Password", skin);
+        backToSignupButton = new TextButton("Back To Signup", skin);
         confirmButton = new TextButton("Confirm", skin);
         confirmButton.setVisible(false);
         errorLabel = new Label("", skin);
@@ -52,6 +54,12 @@ public class LoginMenuView implements Screen {
             securityQuestionField.setVisible(true);
             confirmButton.setVisible(true);
             showError("Enter your username and answer the security question");
+            return true;
+        });
+        backToSignupButton.addListener(e ->{
+            if (!backToSignupButton.isPressed()) return false;
+            Main.getMain().setScreen(new SignupMenuView());
+            LoginMenuView.this.dispose();
             return true;
         });
         confirmButton.addListener(e ->{
@@ -80,6 +88,7 @@ public class LoginMenuView implements Screen {
 
         table.add(loginButton).colspan(2).expandX().pad(10).row();
         table.add(forgetPasswordButton).colspan(2).expandX().pad(10).row();
+        table.add(backToSignupButton).colspan(2).expandX().pad(10).row();
         table.add(errorLabel).colspan(2).pad(10).row();
         table.add(questionLabel).fillX().pad(10);
         table.add(securityQuestionField).expandX().fillX().pad(10).row();

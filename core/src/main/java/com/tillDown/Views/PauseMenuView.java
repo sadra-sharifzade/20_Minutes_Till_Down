@@ -13,10 +13,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tillDown.Controllers.PauseMenuController;
 import com.tillDown.Main;
 import com.tillDown.Models.GameAssetManager;
 import com.tillDown.Models.User;
+
+import java.io.File;
+import java.io.IOException;
 
 public class PauseMenuView implements Screen {
     private Stage stage;
@@ -28,8 +32,10 @@ public class PauseMenuView implements Screen {
     private TextButton quitAndSaveButton;
     private CheckBox blackAndWhiteCheckbox;
     private Skin skin;
+    private GameView gameView;
 
-    public PauseMenuView() {
+    public PauseMenuView(GameView gameView) {
+        this.gameView = gameView;
         this.controller = new PauseMenuController(this);
         skin = GameAssetManager.getGameAssetManager().getSkin();
         resumeButton = new TextButton("Resume", skin);
@@ -41,7 +47,9 @@ public class PauseMenuView implements Screen {
         resumeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //todo resume game
+                gameView.setPaused(false);
+                Main.getMain().setScreen(gameView);
+                PauseMenuView.this.dispose();
             }
         });
         showCheatCodesButton.addListener(new ClickListener() {
@@ -59,14 +67,19 @@ public class PauseMenuView implements Screen {
         quitAndGiveUpButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Main.getMain().setScreen(new MainMenuView());
+                Main.getGameView().getController().endGame(false);
                 PauseMenuView.this.dispose();
             }
         });
         quitAndSaveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //todo save game
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    mapper.writeValue(new File("savedGame.json"), Main.getGameView());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 Main.getMain().setScreen(new MainMenuView());
                 PauseMenuView.this.dispose();
             }
@@ -90,6 +103,7 @@ public class PauseMenuView implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
+        blackAndWhiteCheckbox.setChecked(Main.isBlackAndWhiteEnabled());
         table.add(resumeButton).colspan(2).expandX().pad(10).row();
         table.add(showCheatCodesButton).colspan(2).expandX().pad(10).row();
         table.add(showGainedAbilitiesButton).colspan(2).expandX().pad(10).row();

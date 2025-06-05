@@ -8,11 +8,14 @@ public class Weapon {
     private String name;
     private Sprite sprite;
     private int damage;
-    private final int maxAmmo;
+    private int maxAmmo;
     private int currentAmmo;
     private int projectile;
     private final float reloadTime;
     private float remainingReloadTime;
+    private boolean isReload;
+
+    public void setReload(boolean reload) {isReload = reload;}
 
     public Weapon(String name){
         name=name.toLowerCase();
@@ -46,13 +49,14 @@ public class Weapon {
         remainingReloadTime = 0f;
         currentAmmo = maxAmmo;
     }
-    public void draw(){
+    public void draw(float delta){
+        decreaseRemainingReloadTime(delta);
         sprite.draw(Main.getBatch());
     }
     public void setPosition(float x, float y){
         sprite.setPosition(x, y);
     }
-
+    public void setMaxAmmo(int ammo){maxAmmo=ammo;}
     public Sprite getSprite() {return sprite;}
 
     public int getDamage() {return damage;}
@@ -73,17 +77,20 @@ public class Weapon {
 
     public float getRemainingReloadTime() {return remainingReloadTime;}
 
+    public boolean isReload() {return isReload;}
+
     public void setRemainingReloadTime(float remainingReloadTime) {this.remainingReloadTime = remainingReloadTime;}
-    public void decreaseAmmo(){
+    public boolean decreaseAmmo(){
+        if(currentAmmo==0) return false;
         currentAmmo--;
-        if(currentAmmo == 0){
-            remainingReloadTime = reloadTime;
-        }
+        return true;
     }
 
     public void decreaseRemainingReloadTime(float delta) {
+        if (!isReload) return;
         remainingReloadTime -= delta;
         if (remainingReloadTime <= 0) {
+            isReload = false;
             remainingReloadTime = 0f;
             currentAmmo = maxAmmo;
         }

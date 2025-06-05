@@ -57,6 +57,7 @@ public class SettingsView implements Screen {
         autoReloadCheckbox = new CheckBox(" Auto Reload", skin);
         autoReloadCheckbox.setChecked(Main.isAutoReloadEnabled());
         blackAndWhiteCheckbox = new CheckBox(" Black & White", skin);
+        blackAndWhiteCheckbox.setChecked(Main.isBlackAndWhiteEnabled());
         backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
             @Override

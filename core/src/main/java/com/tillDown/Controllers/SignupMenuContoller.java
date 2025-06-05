@@ -1,11 +1,14 @@
 package com.tillDown.Controllers;
 
 import com.badlogic.gdx.graphics.Color;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tillDown.Main;
 import com.tillDown.Models.User;
 import com.tillDown.Views.MainMenuView;
 import com.tillDown.Views.SignupMenuView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 public class SignupMenuContoller {
@@ -34,7 +37,6 @@ public class SignupMenuContoller {
     }
     public void loginAsGuest() {
         User user = new User("Guest", "guest", (new Random().nextInt(10))+1);
-        Main.addUser(user);
         Main.setCurrentUser(user);
         Main.getMain().setScreen(new MainMenuView());
         view.dispose();

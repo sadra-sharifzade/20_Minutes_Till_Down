@@ -10,6 +10,7 @@ public class Eyebat extends Enemy{
     private float bulletTimer = 0.0f;
     public Eyebat(Vector2 position) {
         super(position);
+        name = "eyebat";
         animation = GameAssetManager.getGameAssetManager().getEnemyAnimations("eyebat");
         sprite = new Sprite(animation.getKeyFrame(0));
         hp = 50;
@@ -21,7 +22,7 @@ public class Eyebat extends Enemy{
         bulletTimer += delta;
         if(bulletTimer > 3f){
             bulletTimer = 0f;
-            WeaponController.addEnemyBullet(new Bullet(position.x, position.y,playerX,playerY, 1,80));
+            WeaponController.addEnemyBullet(new Bullet(position.x, position.y,playerX,playerY, 1,80,false));
         }
 
     }

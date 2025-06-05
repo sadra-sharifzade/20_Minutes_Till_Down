@@ -4,7 +4,7 @@ import com.tillDown.Main;
 import com.tillDown.Views.PreGameMenuView;
 
 public class PreGameMenuController {
-    PreGameMenuView view;
+    private PreGameMenuView view;
     public PreGameMenuController(PreGameMenuView view) {
         this.view = view;
     }

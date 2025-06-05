@@ -1,6 +1,7 @@
 package com.tillDown.Views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -9,13 +10,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tillDown.Controllers.GameController;
 import com.tillDown.Main;
 import com.tillDown.Models.GameAssetManager;
@@ -41,25 +40,28 @@ public class GameView implements Screen, InputProcessor {
     private Label levelLabel;
     private Label HPLabel;
     private Label numShotsLabel;
-    public GameView(String characterName, String weaponName) {
-        camera = new OrthographicCamera();
-        this.controller = new GameController(this,new Player(characterName),new Weapon(weaponName));
-        timeRemaining=Main.getGameTime()*60;
-
+    private boolean paused;
+    public int getElapsedTime() {
+        return (int) (Main.getGameTime()*60-timeRemaining);
     }
-
-    @Override
-    public void show() {
+    public GameController getController() {return controller;}
+    public GameView(){}
+    public GameView(String characterName, String weaponName) {
+        GameAssetManager.changeCursor();
         skin = GameAssetManager.getGameAssetManager().getSkin();
         background = GameAssetManager.getGameAssetManager().getBackground();
         MAP_WIDTH = background.getWidth();
         MAP_HEIGHT = background.getHeight();
+        camera = new OrthographicCamera();
+        Weapon weapon = new Weapon(weaponName);
+        this.controller = new GameController(this, new Player(characterName, weapon), weapon);
+        timeRemaining = Main.getGameTime() * 60;
         camera.zoom = 0.5f;
         gameViewport = new ScreenViewport(camera);
         stage = new Stage(gameViewport);
         Gdx.input.setInputProcessor(this);
-        camera.position.set(MAP_WIDTH/2f, MAP_HEIGHT/2f, 0);
-        controller.getPlayer().setPosition(MAP_WIDTH/2f,MAP_HEIGHT/2f);
+        camera.position.set(MAP_WIDTH / 2f, MAP_HEIGHT / 2f, 0);
+        controller.getPlayer().setPosition(MAP_WIDTH / 2f, MAP_HEIGHT / 2f);
         camera.update();
         hudCamera = new OrthographicCamera();
         hudViewport = new ScreenViewport(hudCamera);
@@ -75,37 +77,52 @@ public class GameView implements Screen, InputProcessor {
         barStyle.background.setMinHeight(30);
         barStyle.knobBefore.setMinHeight(30);
         xpBar = new ProgressBar(0, 100, 1, false, barStyle);
-        xpBar.setValue(50);
         xpBar.setAnimateDuration(0.2f);
         xpBar.setHeight(30);
+        xpBar.setWidth(hudViewport.getScreenWidth());
         Table table = new Table();
         table.setFillParent(true);
-        table.top().left().pad(10);
-        table.add(timerLabel).left().pad(10).row();
-        table.add(xpBar).width(300).left().pad(10);
-        table.add(levelLabel).left().pad(10);
+        table.top().left().pad(5);
+        levelLabel.setAlignment(Align.center);
+        Stack stack = new Stack(xpBar,levelLabel);
+        table.add(stack).width(hudViewport.getScreenWidth() - 50).colspan(2).center().pad(10).row();
+        table.add().height(75f).row();
         table.add(numKillsLabel).left().pad(10);
+        table.add(timerLabel).right().pad(10);
         table.add(HPLabel).left().pad(10);
         table.add(numShotsLabel).left().pad(10);
+        table.add();
         hudStage.addActor(table);
     }
 
-    public OrthographicCamera getCamera() {
-        System.out.println(camera);return camera;}
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(this);
+    }
+
+    public OrthographicCamera getCamera() {return camera;}
+
+    public void setPaused(boolean paused) {this.paused = paused;}
 
     @Override
     public void render(float delta) {
+        if (paused) return;
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         gameViewport.apply();
-        camera.position.set( controller.getPlayer().getX(), controller.getPlayer().getY(), 0);
+        camera.position.set(controller.getPlayer().getX(), controller.getPlayer().getY(), 0);
         camera.update();
         timeRemaining -= delta;
+        xpBar.setValue(controller.getPlayer().getLevelPercentage());
+        levelLabel.setText("LEVEL " + controller.getPlayer().getLevel());
+        numKillsLabel.setText("Number of Killed Enemies: " + controller.getPlayer().getNumKills());
         timerLabel.setText(formatTime((int) timeRemaining));
         SpriteBatch batch = Main.getBatch();
         batch.setProjectionMatrix(camera.combined);
         if (Main.isBlackAndWhiteEnabled()) {
             batch.setShader(Main.getGrayscaleShader());
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         } else {
             batch.setShader(null);
         }
@@ -118,11 +135,16 @@ public class GameView implements Screen, InputProcessor {
         batch.setProjectionMatrix(hudCamera.combined);
         hudStage.act(delta);
         hudStage.draw();
+        if (timeRemaining <= 0) {
+            controller.endGame(true);
+        }
 
     }
-    private String formatTime(int totalSeconds) {
+
+    public String formatTime(int totalSeconds) {
         return String.format("%02d:%02d", totalSeconds / 60, totalSeconds % 60);
     }
+
     @Override
     public void resize(int width, int height) {
 
@@ -149,6 +171,25 @@ public class GameView implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.ESCAPE) {
+            paused = true;
+            Main.getMain().setScreen(new PauseMenuView(this)); // Pass current GameView to resume later
+            return true;
+        } else if (keycode == Input.Keys.NUM_1 && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            timeRemaining -= 60;
+        } else if (keycode == Input.Keys.NUM_2 && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            controller.getPlayer().addXp(controller.getPlayer().getLevel() * 20);
+        } else if (keycode == Input.Keys.NUM_3 && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            if (controller.getPlayer().getMaxHp() != controller.getPlayer().getHp()) {
+                controller.getPlayer().setHp(controller.getPlayer().getHp()+1);
+            }
+        } else if (keycode == Input.Keys.NUM_4 && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            Main.setIsBossFight(true);
+        } else if (keycode == Input.Keys.NUM_5 && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            controller.killNearEnemies();
+        } else if (keycode == Main.getKeyBindings().get("Auto-Aim")) {
+            Main.setIsAutoAimEnabled(!Main.isAutoAimEnabled());
+        }
         return false;
     }
 
@@ -164,7 +205,9 @@ public class GameView implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        controller.getWeaponController().handleWeaponShoot(camera.position.x-camera.viewportWidth/2+screenX, camera.position.y+camera.viewportHeight/2-screenY,camera.position.x,camera.position.y);
+        controller.getWeaponController().handleWeaponShoot(camera.position.x - camera.viewportWidth / 2 + screenX,
+                                                           camera.position.y + camera.viewportHeight / 2 - screenY,
+                                                           camera.position.x, camera.position.y);
         return false;
     }
 

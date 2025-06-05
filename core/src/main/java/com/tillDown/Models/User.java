@@ -1,11 +1,15 @@
 package com.tillDown.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    public static int idCounter = 0;
-    public static int savedGamesCounter = 0;
+    @JsonIgnore
+    private static int idCounter = 0;
+    @JsonIgnore
+    private static int savedGamesCounter = 0;
     private int id;
     private int savedGameId = 0;
     private String username;
@@ -15,7 +19,7 @@ public class User {
     private int numKills;
     private int score;
     private int mostTimeAlive;//in seconds
-    private List<Integer> gainedAbilities =new ArrayList<Integer>(); //0:vitality,1:damager,2:procrease,3:amocrease,4:speedy
+    public User() {}
     public User(String username, String password, int avatarId) {
         this.username = username;
         this.password = password;
@@ -26,7 +30,6 @@ public class User {
         id = ++idCounter;
     }
 
-    public List<Integer> getGainedAbilities() {return gainedAbilities;}
 
     public int getSavedGameId() {return savedGameId;}
 

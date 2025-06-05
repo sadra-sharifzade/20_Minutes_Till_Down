@@ -113,7 +113,7 @@ public class ProfileMenuController {
 
     }
 
-    private static void showOKButton(Dialog dialog, Skin skin) {
+    public static void showOKButton(Dialog dialog, Skin skin) {
         if (dialog.getButtonTable().findActor("okButton") == null) {
             TextButton okButton = new TextButton("OK", skin, "default");
             okButton.setName("okButton");
@@ -206,7 +206,7 @@ public class ProfileMenuController {
 
     }
 
-    private void showDragAndDropDialog() {
+    public void showDragAndDropDialog() {
         Skin skin = GameAssetManager.getGameAssetManager().getSkin();
         Dialog dialog = new Dialog("Drag And Drop", skin);
         Label label = new Label("", skin);
@@ -215,7 +215,7 @@ public class ProfileMenuController {
         dialog.show(view.getStage());
     }
 
-    private void showPredefinedAvatarsDialog() {
+    public void showPredefinedAvatarsDialog() {
         Skin skin = GameAssetManager.getGameAssetManager().getSkin();
         Dialog dialog = new Dialog("Choose Avatar", skin);
 
@@ -241,7 +241,7 @@ public class ProfileMenuController {
         dialog.show(view.getStage());
     }
 
-    private void openFileChooserForAvatar() {
+    public void openFileChooserForAvatar() {
         java.awt.FileDialog dialog = new java.awt.FileDialog((java.awt.Frame) null, "Select Avatar");
         dialog.setMode(java.awt.FileDialog.LOAD);
         dialog.setVisible(true);

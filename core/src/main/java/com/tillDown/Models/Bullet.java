@@ -1,34 +1,58 @@
 package com.tillDown.Models;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.tillDown.Controllers.WeaponController;
 
 public class Bullet {
-
-
     private Vector2 position;
     private Vector2 direction;
     private float speed;
     private Sprite sprite;
     private int damage;
+    private float playerCollidedTime = 0f;
+    private boolean isPlayerCollided = false;
 
-    public Bullet(float startX, float startY, float targetX, float targetY, int damage,int speed) {
+    public Bullet(float startX, float startY, float targetX, float targetY, int damage,int speed,boolean isPlayer) {
         sprite = new Sprite(GameAssetManager.getGameAssetManager().getBulletTexture());
         sprite.setSize(20 , 20);
+        if (isPlayer) sprite.setColor(Color.MAGENTA);
         this.position = new Vector2(startX, startY);
         this.direction = new Vector2(targetX - startX, targetY - startY).nor();
         this.speed = speed;
         this.damage = damage;
         this.sprite.setPosition(startX, startY);
     }
-
+    public Rectangle getBounds() {
+        return sprite.getBoundingRectangle();
+    }
     public void update(float delta) {
-        position.mulAdd(direction, speed * delta);
-        sprite.setPosition(position.x, position.y);
+        if (isPlayerCollided) {
+            playerCollidedTime += delta;
+            sprite.setRegion(GameAssetManager.getGameAssetManager().getDamageAnimation().getKeyFrame(playerCollidedTime));
+            if (playerCollidedTime >= 0.5f) {
+                isPlayerCollided = false;
+                WeaponController.removeEnemyBullet(this);
+            }
+        }else {
+            position.mulAdd(direction, speed * delta);
+            sprite.setPosition(position.x, position.y);
+        }
     }
     public void draw(SpriteBatch batch) {
         sprite.draw(batch);
+    }
+
+    public float getX() {return position.x;}
+    public float getY() {return position.y;}
+
+    public int getDamage() {return damage;}
+    public void setPlayerCollided(boolean isPlayerCollided) {
+        this.isPlayerCollided = isPlayerCollided;
     }
 }

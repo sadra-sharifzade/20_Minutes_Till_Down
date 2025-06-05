@@ -52,7 +52,9 @@ public class PreGameMenuView implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Main.setGameTime(timeDropDown.getSelected());
-                Main.getMain().setScreen(new GameView(heroDropDown.getSelected(),weaponDropDown.getSelected()));
+                GameView view = new GameView(heroDropDown.getSelected(),weaponDropDown.getSelected());
+                Main.getMain().setScreen(view);
+                Main.setGameView(view);
                 PreGameMenuView.this.dispose();
             }
         });

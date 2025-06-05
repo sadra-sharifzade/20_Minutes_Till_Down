@@ -7,6 +7,7 @@ public class Elder extends Enemy{
     private float dashTime = 0f;
     public Elder(Vector2 position) {
         super(position);
+        name = "elder";
         animation = GameAssetManager.getGameAssetManager().getEnemyAnimations("elder");
         sprite = new Sprite(animation.getKeyFrame(0));
         hp = 400;

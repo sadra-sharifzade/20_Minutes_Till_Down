@@ -11,9 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tillDown.Controllers.SignupMenuContoller;
 import com.tillDown.Main;
 import com.tillDown.Models.GameAssetManager;
+
+import java.io.File;
+import java.io.IOException;
 
 public class SignupMenuView implements Screen {
     private Stage stage;

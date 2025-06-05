@@ -24,7 +24,7 @@ public class PauseMenuController {
         dialog.getContentTable().add(new Label("Ctrl+2 ", skin)).center();
         dialog.getContentTable().add(new Label("Increases Level of Player By 1", skin)).center().row();
         dialog.getContentTable().add(new Label("Ctrl+3 ", skin)).center();
-        dialog.getContentTable().add(new Label("Getting a HP (only if dead)", skin)).center().row();
+        dialog.getContentTable().add(new Label("Getting a HP (only if empty)", skin)).center().row();
         dialog.getContentTable().add(new Label("Ctrl+4 ", skin)).center();
         dialog.getContentTable().add(new Label("Go To Boss Fight", skin)).center().row();
         dialog.getContentTable().add(new Label("Ctrl+5 ", skin)).center();
@@ -37,16 +37,10 @@ public class PauseMenuController {
         Dialog dialog = new Dialog("Gained Abilities", skin);
         dialog.pad(20);
         StringBuilder abilities = new StringBuilder();
-        int cnt = 0;
-        for (Integer i: Main.getCurrentUser().getGainedAbilities()){
-            switch (i){
-                case 0: abilities.append("Vitality,"); break;
-                case 1: abilities.append("Damager,"); break;
-                case 2: abilities.append("Procrease,"); break;
-                case 3: abilities.append("Amocrease,"); break;
-                case 4: abilities.append("Speedy,"); break;
-            }
-            if (cnt++ == 3) abilities.append("\n");
+        int cnt = 1;
+        for (String i: Main.getGameView().getController().getPlayer().getGainedAbilities()){
+            abilities.append(i).append(", ");
+            if (cnt++ % 3 == 0) abilities.append("\n");
         }
         dialog.getContentTable().add(new Label(abilities.toString(), skin)).center();
         dialog.button("OK", false);

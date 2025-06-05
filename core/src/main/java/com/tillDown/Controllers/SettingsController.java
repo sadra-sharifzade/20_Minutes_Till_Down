@@ -11,7 +11,7 @@ import com.tillDown.Views.SettingsView;
 import java.awt.*;
 
 public class SettingsController {
-    SettingsView view;
+    private SettingsView view;
     public SettingsController(SettingsView view) {
         this.view = view;
     }

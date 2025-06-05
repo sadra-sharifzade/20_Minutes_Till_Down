@@ -6,12 +6,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tillDown.Main;
 import com.tillDown.Models.User;
+import com.tillDown.Views.GameView;
 import com.tillDown.Views.MainMenuView;
 
+import java.io.File;
+import java.io.IOException;
+
 public class MainMenuController {
-    MainMenuView view;
+    private MainMenuView view;
 
     public MainMenuController(MainMenuView view) {
         this.view = view;
@@ -34,7 +39,13 @@ public class MainMenuController {
             );
             errorDialog.show(stage);
         }
-        //Todo load game
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            Main.setGameView(mapper.readValue(new File("savedGame.json"), GameView.class));
+            Main.getMain().setScreen(Main.getGameView());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -10,7 +10,7 @@ public class Lwjgl3Launcher {
         createApplication();
     }
 
-    private static void createApplication() {
+    public static void createApplication() {
         Main game = new Main();
         Lwjgl3ApplicationConfiguration config = getDefaultConfiguration();
         Lwjgl3Application app = new Lwjgl3Application(game, getDefaultConfiguration());
@@ -18,7 +18,7 @@ public class Lwjgl3Launcher {
 
     }
 
-    private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
+    public static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         configuration.setTitle("20minsTillDawn");
         //// Vsync limits the frames per second to what your hardware can display, and helps eliminate

@@ -5,22 +5,24 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tillDown.Controllers.SignupMenuContoller;
 import com.tillDown.Models.GameAssetManager;
 import com.tillDown.Models.Player;
 import com.tillDown.Models.User;
+import com.tillDown.Views.GameView;
 import com.tillDown.Views.MainMenuView;
 import com.tillDown.Views.ProfileMenuView;
 import com.tillDown.Views.SignupMenuView;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 public class Main extends Game{
     private static SpriteBatch batch;
@@ -29,14 +31,25 @@ public class Main extends Game{
     private static User currentUser;
     private static Music currentMusic;
     private static boolean isSFXEnabled = true;
-    private static boolean isAutoReloadEnabled = false;
+    private static boolean isAutoReloadEnabled = true;
     private static boolean isBlackAndWhiteEnabled = false;
     private static ShaderProgram grayscaleShader;
     private static ProfileMenuView profileMenuView;//for drag and drop
+    private static GameView gameView;
     private static Map<String, Integer> keyBindings;
     private static String heroName;
     private static String weaponName;
     private static int gameTime;
+    private static boolean isAutoAimEnabled = false;
+    private static boolean isBossFight = false;
+
+    public static boolean isBossFight() {return isBossFight;}
+
+    public static void setIsBossFight(boolean isBossFight) {Main.isBossFight = isBossFight;}
+
+    public static boolean isAutoAimEnabled() {return isAutoAimEnabled;}
+
+    public static void setIsAutoAimEnabled(boolean isAutoAimEnabled) {Main.isAutoAimEnabled = isAutoAimEnabled;}
 
     public static String getHeroName() {return heroName;}
 
@@ -94,9 +107,18 @@ public class Main extends Game{
     public static void addUser(User user) {
         users.add(user);
     }
+
+    public static void setGameView(GameView view) {gameView=view;}
+    public static GameView getGameView() {return gameView;}
+
     @Override
     public void create() {
-        //TODO load users from json
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            users = mapper.readValue(new File("users.json"),new TypeReference<ArrayList<User>>() {});
+        } catch (IOException ignored) {
+
+        }
         main = this;
         batch = new SpriteBatch();
         GameAssetManager.getGameAssetManager().load();
@@ -124,6 +146,12 @@ public class Main extends Game{
 
     @Override
     public void dispose() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writeValue(new File("users.json"),users);
+        } catch (IOException ignored) {
+
+        }
         batch.dispose();
         GameAssetManager.getGameAssetManager().dispose();
     }

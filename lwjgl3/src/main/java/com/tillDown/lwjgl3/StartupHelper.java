@@ -43,9 +43,9 @@ import static org.lwjgl.system.macosx.ObjCRuntime.sel_getUid;
  */
 public class StartupHelper {
 
-    private static final String JVM_RESTARTED_ARG = "jvmIsRestarted";
+    public static final String JVM_RESTARTED_ARG = "jvmIsRestarted";
 
-    private StartupHelper() {
+    public StartupHelper() {
         throw new UnsupportedOperationException();
     }
 
