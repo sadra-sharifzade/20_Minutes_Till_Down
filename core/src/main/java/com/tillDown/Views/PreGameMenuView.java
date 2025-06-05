@@ -41,8 +41,8 @@ public class PreGameMenuView implements Screen {
         weaponDropDown.setItems("Revolver","Shotgun","SMGs Dual");
         timeDropDown = new SelectBox<>(skin);
         timeDropDown.setItems(2,5,10,20);
-        backButton = new TextButton("Back", skin);
-        startGameButton = new TextButton("Start Game", skin);
+        backButton = new TextButton(Main.language.back, skin);
+        startGameButton = new TextButton(Main.language.startGame, skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -95,12 +95,12 @@ public class PreGameMenuView implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         table.add(backButton).width(100).pad(20);
-        table.add(new Label("Pre-Game Menu", skin,"title")).colspan(2).row();
-        table.add(new Label("Choose Hero:", skin)).pad(10);
+        table.add(new Label(Main.language.preGameMenu, skin,"title")).colspan(2).row();
+        table.add(new Label(Main.language.chooseHero, skin)).pad(10);
         table.add(heroDropDown).colspan(2).fillX().pad(10).row();
-        table.add(new Label("Choose Weapon: ",skin)).pad(10);
+        table.add(new Label(Main.language.chooseWeapon,skin)).pad(10);
         table.add(weaponDropDown).colspan(2).fillX().pad(10).row();
-        table.add(new Label("Choose Game Time:", skin)).pad(10);
+        table.add(new Label(Main.language.chooseGameTime, skin)).pad(10);
         table.add(timeDropDown).colspan(2).fillX().pad(10).row();
         table.add(startGameButton).colspan(3).fillX().pad(10).row();
         stage.addActor(table);
@@ -109,7 +109,7 @@ public class PreGameMenuView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.GRAY);
         stage.act(delta);
         stage.draw();
     }

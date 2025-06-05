@@ -30,11 +30,11 @@ public class TalentMenuView implements Screen {
         this.controller = new TalentMenuController(this);
         this.stage = new Stage(new FitViewport(1000,1000));
         skin = GameAssetManager.getGameAssetManager().getSkin();
-        heroesInfoButton = new TextButton("Heroes Info", skin);
-        cheatCodesInfoButton = new TextButton("Cheat Codes", skin);
-        keyBindingsInfoButton = new TextButton("Key Bindings", skin);
-        abilitiesInfoButton = new TextButton("Abilities Info", skin);
-        backButton = new TextButton("Back", skin);
+        heroesInfoButton = new TextButton(Main.language.heroesInfo, skin);
+        cheatCodesInfoButton = new TextButton(Main.language.cheatCodes, skin);
+        keyBindingsInfoButton = new TextButton(Main.language.keyBindings, skin);
+        abilitiesInfoButton = new TextButton(Main.language.abilitiesInfo, skin);
+        backButton = new TextButton(Main.language.back, skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -77,7 +77,7 @@ public class TalentMenuView implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-        table.add(new Label("Hints", skin, "title")).colspan(2);
+        table.add(new Label(Main.language.hints, skin, "title")).colspan(2);
         table.add(backButton).width(100).pad(20).row();
         table.add(heroesInfoButton).pad(10).row();
         table.add(cheatCodesInfoButton).pad(10).row();
@@ -87,7 +87,7 @@ public class TalentMenuView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.GRAY);
         stage.act(delta);
         stage.draw();
     }

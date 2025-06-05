@@ -27,11 +27,11 @@ public class ProfileMenuView implements Screen {
         this.controller = new ProfileMenuController(this);
         this.stage = new Stage(new FitViewport(1000,1000));
         skin = GameAssetManager.getGameAssetManager().getSkin();
-        changeUsernameButton = new TextButton("Change Username", skin);
-        changePasswordButton = new TextButton("Change Password", skin);
-        deleteAccountButton = new TextButton("Delete Account", skin);
-        changeAvatarButton = new TextButton("Change Avatar", skin);
-        backButton = new TextButton("Back", skin);
+        changeUsernameButton = new TextButton(Main.language.changeUsername, skin);
+        changePasswordButton = new TextButton(Main.language.changePassword, skin);
+        deleteAccountButton = new TextButton(Main.language.deleteAccount, skin);
+        changeAvatarButton = new TextButton(Main.language.changeAvatar, skin);
+        backButton = new TextButton(Main.language.back, skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -80,7 +80,7 @@ public class ProfileMenuView implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-        table.add(new Label("Profile", skin, "title")).colspan(2);
+        table.add(new Label(Main.language.profile, skin, "title")).colspan(2);
         table.add(backButton).width(100).pad(20).row();
         table.add(changeUsernameButton).pad(10).row();
         table.add(changePasswordButton).pad(10).row();
@@ -90,7 +90,7 @@ public class ProfileMenuView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.GRAY);
         stage.act(delta);
         stage.draw();
     }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -110,15 +111,15 @@ public class GameView implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
         if (paused) return;
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        ScreenUtils.clear(Color.GRAY);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         gameViewport.apply();
         camera.position.set(controller.getPlayer().getX(), controller.getPlayer().getY(), 0);
         camera.update();
         timeRemaining -= delta;
         xpBar.setValue(controller.getPlayer().getLevelPercentage());
-        levelLabel.setText("LEVEL " + controller.getPlayer().getLevel());
-        numKillsLabel.setText("Number of Killed Enemies: " + controller.getPlayer().getNumKills());
+        levelLabel.setText(Main.language.level + controller.getPlayer().getLevel());
+        numKillsLabel.setText(Main.language.numberOfKilledEnemies + controller.getPlayer().getNumKills());
         timerLabel.setText(formatTime((int) timeRemaining));
         SpriteBatch batch = Main.getBatch();
         batch.setProjectionMatrix(camera.combined);

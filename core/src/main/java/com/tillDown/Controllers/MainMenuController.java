@@ -28,21 +28,6 @@ public class MainMenuController {
 
     public void resumeLastGame(Skin skin, Stage stage) {
         User user = Main.getCurrentUser();
-        if (!(new File("userData/"+user.getId()).exists())) {
-            Dialog errorDialog = new Dialog("Error", skin);
-            errorDialog.text("You Don't Have A Saved Game");
-            TextButton okButton = new TextButton("OK", skin);
-            okButton.getLabel().setFontScale(0.65f);  // Scale text inside the button
-            okButton.getLabel().setAlignment(Align.center);
-            errorDialog.button(okButton, true);
-            errorDialog.pad(50); // Add padding inside dialog
-            errorDialog.pack(); // Recalculate size
-            errorDialog.setPosition(
-                (Gdx.graphics.getWidth() - errorDialog.getWidth()) / 2,
-                (Gdx.graphics.getHeight() - errorDialog.getHeight()) / 2
-            );
-            errorDialog.show(stage);
-        }
         ObjectMapper mapper = Main.getMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
@@ -64,10 +49,23 @@ public class MainMenuController {
             OrbsController.setOrbs(orbs);
             WeaponController.setEnemyBullets(enemyBullets);
             WeaponController.setPlayerBullets(playerBullets);
+            if (Main.getGameView()!=null) {Main.setRemainingTime(Main.getGameView().getRemainingTime());}
             Main.setGameView(new GameView(player,weapon,false));
             Main.getMain().setScreen(Main.getGameView());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Dialog errorDialog = new Dialog("Error", skin);
+            errorDialog.text("You Don't Have A Saved Game");
+            TextButton okButton = new TextButton("OK", skin);
+            okButton.getLabel().setFontScale(0.65f);  // Scale text inside the button
+            okButton.getLabel().setAlignment(Align.center);
+            errorDialog.button(okButton, true);
+            errorDialog.pad(50); // Add padding inside dialog
+            errorDialog.pack(); // Recalculate size
+            errorDialog.setPosition(
+                (Gdx.graphics.getWidth() - errorDialog.getWidth()) / 2,
+                (Gdx.graphics.getHeight() - errorDialog.getHeight()) / 2
+            );
+            errorDialog.show(stage);
         }
     }
 

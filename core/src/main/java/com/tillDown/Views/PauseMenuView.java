@@ -38,12 +38,12 @@ public class PauseMenuView implements Screen {
         this.gameView = gameView;
         this.controller = new PauseMenuController(this);
         skin = GameAssetManager.getGameAssetManager().getSkin();
-        resumeButton = new TextButton("Resume", skin);
-        showCheatCodesButton = new TextButton("Cheat Codes", skin);
-        showGainedAbilitiesButton = new TextButton("Gained Abilities", skin);
-        quitAndSaveButton = new TextButton("Quit & Save", skin);
-        quitAndGiveUpButton = new TextButton("Quit & Give Up", skin);
-        blackAndWhiteCheckbox = new CheckBox(" Black & White", skin);
+        resumeButton = new TextButton(Main.language.resume, skin);
+        showCheatCodesButton = new TextButton(Main.language.cheatCodes, skin);
+        showGainedAbilitiesButton = new TextButton(Main.language.gainedAbilities, skin);
+        quitAndSaveButton = new TextButton(Main.language.quitAndSave, skin);
+        quitAndGiveUpButton = new TextButton(Main.language.quitAndGiveUp, skin);
+        blackAndWhiteCheckbox = new CheckBox(Main.language.blackAndWhite, skin);
         resumeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -109,7 +109,7 @@ public class PauseMenuView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.GRAY);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();

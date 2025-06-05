@@ -41,10 +41,10 @@ public class SignupMenuView implements Screen {
         passwordField = new TextField("", skin);
         securityQuestionField = new TextField("", skin);
         securityQuestionField.setVisible(false);
-        signupButton = new TextButton("Sign Up", skin);
-        guestButton = new TextButton("Play as Guest", skin);
-        loginButton = new TextButton("Login", skin);
-        questionButton = new TextButton("Confirm", skin);
+        signupButton = new TextButton(Main.language.signUp, skin);
+        guestButton = new TextButton(Main.language.playAsGuest, skin);
+        loginButton = new TextButton(Main.language.login, skin);
+        questionButton = new TextButton(Main.language.confirm, skin);
         questionButton.setVisible(false);
 
         errorLabel = new Label("", skin);
@@ -114,10 +114,10 @@ public class SignupMenuView implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-        table.add(new Label("Username:", skin)).left().pad(10);
+        table.add(new Label(Main.language.username, skin)).left().pad(10);
         table.add(usernameField).expandX().fillX().pad(10).row();
 
-        table.add(new Label("Password:", skin)).left().pad(10);
+        table.add(new Label(Main.language.password, skin)).left().pad(10);
         table.add(passwordField).expandX().fillX().pad(10).row();
 
         table.add(signupButton).colspan(2).expandX().pad(10).row();
@@ -131,7 +131,7 @@ public class SignupMenuView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.GRAY);
         stage.act(delta);
         stage.draw();
     }

@@ -28,12 +28,12 @@ public class EndView implements Screen {
 
     public EndView(boolean won,int score, int numKills,int timeAlive) {
         skin = GameAssetManager.getGameAssetManager().getSkin();
-        if (won) titleLabel = new Label(Main.getCurrentUser().getUsername() + ", You Won!", skin);
-        else titleLabel = new Label(Main.getCurrentUser().getUsername() + ", You Lost!", skin);
-        scoreLabel = new Label("Score: " + score, skin);
-        numKillsLabel = new Label("Kills: " + numKills, skin);
-        timeAliveLabel = new Label("Time Alive: " + timeAlive + " secs", skin);
-        backToMainMenuButton = new TextButton("Back to Main Menu", skin);
+        if (won) titleLabel = new Label(Main.getCurrentUser().getUsername() + Main.language.won, skin);
+        else titleLabel = new Label(Main.getCurrentUser().getUsername() + Main.language.lost, skin);
+        scoreLabel = new Label(Main.language.score + score, skin);
+        numKillsLabel = new Label( Main.language.kills+ numKills, skin);
+        timeAliveLabel = new Label(Main.language.timeAlive + timeAlive + " secs", skin);
+        backToMainMenuButton = new TextButton(Main.language.backToMainMenu, skin);
         backToMainMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -59,7 +59,7 @@ public class EndView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.GRAY);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();

@@ -12,10 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tillDown.Controllers.SignupMenuContoller;
-import com.tillDown.Models.GameAssetManager;
-import com.tillDown.Models.GameSettingData;
-import com.tillDown.Models.Player;
-import com.tillDown.Models.User;
+import com.tillDown.Models.*;
 import com.tillDown.Views.GameView;
 import com.tillDown.Views.MainMenuView;
 import com.tillDown.Views.ProfileMenuView;
@@ -44,6 +41,7 @@ public class Main extends Game{
     private static boolean isAutoAimEnabled = false;
     private static boolean isBossFight = false;
     private static float remainingTime = 0;
+    public static Language language = Language.ENGLISH;
     private static ObjectMapper mapper = new ObjectMapper();
 
     public static boolean isBossFight() {return isBossFight;}
@@ -114,6 +112,8 @@ public class Main extends Game{
     public static void setGameView(GameView view) {gameView=view;}
     public static GameView getGameView() {return gameView;}
 
+    public static void setRemainingTime(float remainingTime) {Main.remainingTime = remainingTime;}
+
     public static ObjectMapper getMapper() {return mapper;}
     public static void save(String filepath) throws IOException {
         GameSettingData data = new GameSettingData();
@@ -124,7 +124,7 @@ public class Main extends Game{
         data.heroName = heroName;
         data.weaponName = weaponName;
         data.gameTime = gameTime;
-        data.remainingTime = gameView==null? 0:gameView.getRemainingTime();
+        data.remainingTime = (gameView==null? 0:gameView.getRemainingTime());
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(new File(filepath), data);

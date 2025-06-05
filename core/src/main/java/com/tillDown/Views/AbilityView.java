@@ -31,13 +31,13 @@ public class AbilityView implements Screen {
 
     public AbilityView(Player player) {
         skin = GameAssetManager.getGameAssetManager().getSkin();
-        titleLabel = new Label("You Upgraded To Level " + player.getLevel() + "! Choose From Below Abilities:", skin);
+        titleLabel = new Label(Main.language.youUpgraded + player.getLevel() + Main.language.chooseFrom, skin);
         ArrayList<String> abilities = new ArrayList<>();
-        abilities.add("speedy");
-        abilities.add("damager");
-        abilities.add("procrease");
-        abilities.add("amocrease");
-        abilities.add("vitality");
+        abilities.add("Speedy");
+        abilities.add("Damager");
+        abilities.add("Procrease");
+        abilities.add("Amocrease");
+        abilities.add("Vitality");
         for (int i = 0; i < 3; i++) {
             int rand = new Random().nextInt(abilities.size());
             abilityButtons[i] = new TextButton(abilities.get(rand), skin);
@@ -47,7 +47,7 @@ public class AbilityView implements Screen {
                 public void clicked(InputEvent event, float x, float y) {
                     Main.getMain().setScreen(Main.getGameView());
                     Main.getGameView().setPaused(false);
-                    player.addAbility(((TextButton) event.getListenerActor()).getLabel().getText().toString());
+                    player.addAbility(((TextButton) event.getListenerActor()).getLabel().getText().toString().toLowerCase());
                     AbilityView.this.dispose();
                 }
             });
@@ -70,7 +70,7 @@ public class AbilityView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.GRAY);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();

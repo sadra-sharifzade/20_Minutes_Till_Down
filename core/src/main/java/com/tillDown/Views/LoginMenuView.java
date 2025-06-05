@@ -31,14 +31,14 @@ public class LoginMenuView implements Screen {
         skin = GameAssetManager.getGameAssetManager().getSkin();
         usernameField = new TextField("", skin);
         passwordField = new TextField("", skin);
-        loginButton = new TextButton("Login", skin);
-        forgetPasswordButton = new TextButton("Forget Password", skin);
-        backToSignupButton = new TextButton("Back To Signup", skin);
-        confirmButton = new TextButton("Confirm", skin);
+        loginButton = new TextButton(Main.language.login, skin);
+        forgetPasswordButton = new TextButton(Main.language.forgotPassword, skin);
+        backToSignupButton = new TextButton(Main.language.backToSignUp, skin);
+        confirmButton = new TextButton(Main.language.confirm, skin);
         confirmButton.setVisible(false);
         errorLabel = new Label("", skin);
         errorLabel.setColor(Color.RED);
-        questionLabel = new Label("where were you born?", skin);
+        questionLabel = new Label(Main.language.whereWereYouBorn, skin);
         questionLabel.setVisible(false);
         securityQuestionField = new TextField("", skin);
         securityQuestionField.setVisible(false);
@@ -53,7 +53,7 @@ public class LoginMenuView implements Screen {
             questionLabel.setVisible(true);
             securityQuestionField.setVisible(true);
             confirmButton.setVisible(true);
-            showError("Enter your username and answer the security question");
+            showError(Main.language.enterYourUsername);
             return true;
         });
         backToSignupButton.addListener(e ->{
@@ -80,10 +80,10 @@ public class LoginMenuView implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-        table.add(new Label("Username:", skin)).left().pad(10);
+        table.add(new Label(Main.language.username, skin)).left().pad(10);
         table.add(usernameField).expandX().fillX().pad(10).row();
 
-        table.add(new Label("Password:", skin)).left().pad(10);
+        table.add(new Label(Main.language.password, skin)).left().pad(10);
         table.add(passwordField).expandX().fillX().pad(10).row();
 
         table.add(loginButton).colspan(2).expandX().pad(10).row();
@@ -97,7 +97,7 @@ public class LoginMenuView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.GRAY);
         stage.act(delta);
         stage.draw();
     }

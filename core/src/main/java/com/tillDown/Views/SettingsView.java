@@ -23,6 +23,7 @@ import com.tillDown.Controllers.SettingsController;
 import com.tillDown.Controllers.SignupMenuContoller;
 import com.tillDown.Main;
 import com.tillDown.Models.GameAssetManager;
+import com.tillDown.Models.Language;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class SettingsView implements Screen {
     private Stage stage;
     private final SettingsController controller;
     private SelectBox<String> musicDropdown;
+    private SelectBox<String> languageDropdown;
     private Slider volumeSlider;
     private Label volumeLabel;
     private Skin skin;
@@ -52,6 +54,9 @@ public class SettingsView implements Screen {
         }
         musicDropdown.setItems(musicNames);
         musicDropdown.setSelectedIndex(2);
+        languageDropdown = new SelectBox<>(skin);
+        languageDropdown.setItems("English", "German");
+        if (Main.language == Language.GERMAN) languageDropdown.setSelectedIndex(1);
         volumeSlider = new Slider(0f, 1f, 0.01f, false, skin);
         volumeSlider.setValue(Main.getCurrentMusic().getVolume());
         volumeLabel = new Label("100%", skin);
@@ -59,9 +64,9 @@ public class SettingsView implements Screen {
         sfxCheckbox.setChecked(Main.isSFXEnabled());
         autoReloadCheckbox = new CheckBox(" Auto Reload", skin);
         autoReloadCheckbox.setChecked(Main.isAutoReloadEnabled());
-        blackAndWhiteCheckbox = new CheckBox(" Black & White", skin);
+        blackAndWhiteCheckbox = new CheckBox(Main.language.blackAndWhite, skin);
         blackAndWhiteCheckbox.setChecked(Main.isBlackAndWhiteEnabled());
-        backButton = new TextButton("Back", skin);
+        backButton = new TextButton(Main.language.back, skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -92,6 +97,13 @@ public class SettingsView implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 controller.changeMusic(musicDropdown.getSelected());
+            }
+        });
+        languageDropdown.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (languageDropdown.getSelected().equals("English")) {Main.language = Language.ENGLISH;}
+                else Main.language = Language.GERMAN;
             }
         });
         Sound clickSound = Gdx.audio.newSound(Gdx.files.internal("sfx/click.wav"));
@@ -126,10 +138,12 @@ public class SettingsView implements Screen {
         table = new Table();
         table.setFillParent(true);
         table.add(backButton).width(100).pad(20);
-        table.add(new Label("Settings", skin,"title")).colspan(2).row();
-        table.add(new Label("Choose Music:", skin)).pad(10);
+        table.add(new Label(Main.language.settings, skin,"title")).colspan(2).row();
+        table.add(new Label(Main.language.chooseMusic, skin)).pad(10);
         table.add(musicDropdown).colspan(2).fillX().pad(10).row();
-        table.add(new Label("Volume", skin)).pad(10).left();
+        table.add(new Label(Main.language.chooseLanguage, skin)).pad(10);
+        table.add(languageDropdown).colspan(2).fillX().pad(10).row();
+        table.add(new Label(Main.language.volume, skin)).pad(10).left();
         table.add(volumeSlider).colspan(2).fillX().pad(10);
         table.add(volumeLabel).width(100).pad(10).left().row();
         table.add(sfxCheckbox).left().pad(10);
@@ -144,7 +158,7 @@ public class SettingsView implements Screen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if (waitingForKeyAction == null) {
-                        keyButton.setText("Press a key...");
+                        keyButton.setText(Main.language.pressAKey);
                         waitingForKeyAction = action;
                         Main.getKeyBindings().put(action,-1);
                     }
@@ -169,7 +183,7 @@ public class SettingsView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.GRAY);
         stage.act(delta);
         stage.draw();
     }

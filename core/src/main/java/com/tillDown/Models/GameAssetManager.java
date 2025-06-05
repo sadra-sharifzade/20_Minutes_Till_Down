@@ -89,7 +89,7 @@ public class GameAssetManager {
     public Texture getWeaponTexture(String weaponName){
         switch (weaponName){
             case "revolver": return revolverTexture;
-            case "smg": return smgTexture;
+            case "smgs dual": return smgTexture;
             case "shotgun": return shotgunTexture;
         }
         return null;

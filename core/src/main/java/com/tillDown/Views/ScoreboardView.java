@@ -42,7 +42,7 @@ public class ScoreboardView implements Screen {
                 controller.updateScoreboard(sortSelectBox.getSelected());
             }
         });
-        backButton = new TextButton("Back", skin);
+        backButton = new TextButton(Main.language.back, skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -64,7 +64,7 @@ public class ScoreboardView implements Screen {
     public void show() {
         table.defaults().pad(10);
         table.add(backButton).left().width(100).pad(20);
-        Label title = new Label("Scoreboard", skin,"title");
+        Label title = new Label(Main.language.scoreboard, skin,"title");
         table.add(title).center().colspan(3);
         table.row();
         table.add(sortSelectBox).colspan(4).pad(10).row();
@@ -75,7 +75,7 @@ public class ScoreboardView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.GRAY);
         stage.act(delta);
         stage.draw();
     }

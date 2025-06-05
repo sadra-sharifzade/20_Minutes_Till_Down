@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tillDown.Controllers.MainMenuController;
 import com.tillDown.Main;
 import com.tillDown.Models.GameAssetManager;
@@ -31,13 +32,13 @@ public class MainMenuView implements Screen {
     public MainMenuView() {
         this.controller = new MainMenuController(this);
         skin = GameAssetManager.getGameAssetManager().getSkin();
-        resumeLastGameButton = new TextButton("Resume Last Game", skin);
-        settingsButton = new TextButton("Settings", skin);
-        profileButton = new TextButton("Profile", skin);
-        scoreboardButton = new TextButton("Scoreboard", skin);
-        preGameButton = new TextButton("Create A New Game", skin);
-        talentButton = new TextButton("Talent", skin);
-        signOutButton = new TextButton("Sign Out", skin);
+        resumeLastGameButton = new TextButton(Main.language.resumeLastGame, skin);
+        settingsButton = new TextButton(Main.language.settings, skin);
+        profileButton = new TextButton(Main.language.profile, skin);
+        scoreboardButton = new TextButton(Main.language.scoreboard ,skin);
+        preGameButton = new TextButton(Main.language.createANewGame, skin);
+        talentButton = new TextButton(Main.language.talent, skin);
+        signOutButton = new TextButton(Main.language.signOut, skin);
 
         resumeLastGameButton.addListener(new ClickListener() {
             @Override
@@ -94,23 +95,23 @@ public class MainMenuView implements Screen {
 
     @Override
     public void show() {
-        stage = new Stage(new FitViewport(1000, 1000));
+        stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         User user = Main.getCurrentUser();
 
         Texture profileTexture = new Texture(Gdx.files.internal("assets/avatars/"+user.getAvatarName()));
         Image profileImage = new Image(profileTexture);
-        profileImage.setSize(64, 64);
+        profileImage.setSize(100, 100);
 
         Label usernameLabel = new Label(user.getUsername(), skin);
-        Label scoreLabel = new Label("Score: " + user.getScore(), skin);
+        Label scoreLabel = new Label(Main.language.score + user.getScore(), skin);
 
         Table profileTable = new Table();
         profileTable.top().left();
         profileTable.setFillParent(true);
         profileTable.pad(10);
 
-        profileTable.add(profileImage).size(64, 64).padRight(10);
+        profileTable.add(profileImage).size(100, 100).padRight(10).padLeft(250);
         Table textTable = new Table();
         textTable.add(usernameLabel).left().row();
         textTable.add(scoreLabel).left();
@@ -132,7 +133,7 @@ public class MainMenuView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.GRAY);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();
