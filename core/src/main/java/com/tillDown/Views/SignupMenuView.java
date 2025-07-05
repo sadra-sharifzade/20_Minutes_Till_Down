@@ -131,7 +131,7 @@ public class SignupMenuView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.GRAY);
+        ScreenUtils.clear(Color.DARK_GRAY);
         stage.act(delta);
         stage.draw();
     }

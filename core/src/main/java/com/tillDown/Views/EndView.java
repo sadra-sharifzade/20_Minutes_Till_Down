@@ -38,6 +38,7 @@ public class EndView implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Main.getMain().setScreen(new MainMenuView());
+                //Main.getCurrentMusic().play();
                 EndView.this.dispose();
             }
         });
@@ -59,7 +60,7 @@ public class EndView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.GRAY);
+        ScreenUtils.clear(Color.DARK_GRAY);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();

@@ -3,6 +3,7 @@ package com.tillDown.Controllers;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tillDown.Main;
@@ -37,10 +38,17 @@ public class EnemiesController {
             enemies.add(new Tree(new Vector2(random.nextInt(GameView.MAP_WIDTH),random.nextInt(GameView.MAP_HEIGHT))));
         }
     }
+    public static boolean rectangleOverlap(Rectangle r1, Rectangle r2) {
+        float x1 = r1.getX(),x2=r2.getX(),y1 = r1.getY(),y2=r2.getY();
+        float width1 = r1.getWidth(),width2 = r2.getWidth(),height1 = r1.getHeight(),height2=r2.getHeight();
+        float centerX1 = x1+width1/2,centerX2 = x2+width2/2,centerY1 = y1+height1/2,centerY2 = y2+height2/2;
+        if (Math.abs(centerX1-centerX2)<Math.abs(width1+width2-20)/2 && Math.abs(centerY1-centerY2)<Math.abs(height1+height2-20)/2) return true;
+        return false;
+    }
     public static void checkEnemyCollision(Player player) {
         if (player.isInvincible()) return;
         for (Enemy e : enemies) {
-            if (e.getBounds().overlaps(player.getBounds())) {
+            if (rectangleOverlap(e.getBounds(),player.getBounds())) {
                 player.getDamage();
                 if(!e.getName().equals("tree"))e.moveBack();
             }
@@ -49,7 +57,7 @@ public class EnemiesController {
     public static int checkEnemyCollision(Bullet bullet) {
         int cnt = 0;
         for (Enemy e : enemies) {
-            if (e.getBounds().overlaps(bullet.getBounds())) {
+            if (rectangleOverlap(e.getBounds(),bullet.getBounds())) {
                 if(!e.getName().equals("tree")){
                     if(!e.getName().equals("elder"))e.moveBack();
                     if(e.decreaseHp(bullet.getDamage()))cnt++;

@@ -1,8 +1,5 @@
 package com.tillDown.Models;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -19,11 +16,12 @@ public class Bullet {
     private int damage;
     private float playerCollidedTime = 0f;
     private boolean isPlayerCollided = false;
+    private boolean isPlayerBullet = false;
     public Bullet(){}
     public Bullet(float startX, float startY, float targetX, float targetY, int damage,int speed,boolean isPlayer) {
-        sprite = new Sprite(GameAssetManager.getGameAssetManager().getBulletTexture());
+        sprite = new Sprite(GameAssetManager.getGameAssetManager().getBulletTexture(isPlayer));
+        isPlayerBullet = isPlayer;
         sprite.setSize(20 , 20);
-        if (isPlayer) sprite.setColor(Color.MAGENTA);
         this.position = new Vector2(startX, startY);
         this.direction = new Vector2(targetX - startX, targetY - startY).nor();
         this.speed = speed;
@@ -31,7 +29,7 @@ public class Bullet {
         this.sprite.setPosition(startX, startY);
     }
     public void reInitialize() {
-        sprite = new Sprite(GameAssetManager.getGameAssetManager().getBulletTexture());
+        sprite = new Sprite(GameAssetManager.getGameAssetManager().getBulletTexture(isPlayerBullet));
         sprite.setSize(20 , 20);
         sprite.setPosition(position.x, position.y);
     }

@@ -74,7 +74,7 @@ public class Player {
         sprite.setPosition(x, y);
         circleSprite = new Sprite(GameAssetManager.getGameAssetManager().getCircleTexture());
         circleSprite.setPosition(circleX, circleY);
-        circleSprite.setAlpha(0.5f);
+        circleSprite.setAlpha(0.25f);
         position = new Vector2(x,y);
         this.weapon = weapon;
         emptyHeart = GameAssetManager.getGameAssetManager().getEmptyHeartTexture();
@@ -100,7 +100,7 @@ public class Player {
     public Player(String name, Weapon weapon) {
         this.weapon = weapon;
         circleSprite = new Sprite(GameAssetManager.getGameAssetManager().getCircleTexture());
-        circleSprite.setAlpha(0.5f);
+        circleSprite.setAlpha(0.25f);
         this.characterName = name.toLowerCase();
         switch (characterName) {
             case "shana":
@@ -198,12 +198,11 @@ public class Player {
         sprite.setPosition(position.x, position.y);
         updateHearts();
         updateAmmos();
-        System.out.println(position.x + " " + position.y);
     }
 
     public void updateAmmos() {
         for (int i = 0; i < ammos.size(); i++) {
-            ammos.get(i).setPosition(position.x+460-30*i, position.y+200);
+            ammos.get(i).setPosition(Main.getGameView().getCamera().position.x+480-30*i, Main.getGameView().getCamera().position.y+190);
             if (i < weapon.getCurrentAmmo()) ammos.get(i).setColor(Color.WHITE);
             else ammos.get(i).setColor(Color.BLACK);
         }
@@ -211,7 +210,7 @@ public class Player {
 
     public void updateHearts() {
         for (int i = 0; i < maxHp; i++) {
-            hearts.get(i).setPosition(position.x-460+30*i, position.y+200);
+            hearts.get(i).setPosition(Main.getGameView().getCamera().position.x-470+30*i, Main.getGameView().getCamera().position.y+190);
             if (i<hp) hearts.get(i).setRegion(heartAnimation.getKeyFrame(heartTime).getTexture());
             else hearts.get(i).setRegion(emptyHeart);
         }

@@ -55,7 +55,7 @@ public class ScoreboardController {
 
             // Highlight top 3
             if (i == 0) rankLabel.setColor(Color.GOLD);
-            else if (i == 1) rankLabel.setColor(Color.GRAY);
+            else if (i == 1) rankLabel.setColor(Color.DARK_GRAY);
             else if (i == 2) rankLabel.setColor(Color.BROWN);
 
             // Highlight current user

@@ -39,6 +39,8 @@ public class GameController {
         enemiesController.killEnemies(getPlayer().getX(),getPlayer().getY());
     }
     public void endGame(boolean won) {
+        Main.getCurrentMusic().setLooping(false);
+        Main.getCurrentMusic().stop();
         if (won) GameAssetManager.getGameAssetManager().playSound("win");
         else GameAssetManager.getGameAssetManager().playSound("lose");
         User currentUser = Main.getCurrentUser();

@@ -70,8 +70,7 @@ public class AbilityView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.GRAY);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        ScreenUtils.clear(Color.SLATE);
         stage.act(delta);
         stage.draw();
     }

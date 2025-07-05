@@ -13,6 +13,9 @@ import com.tillDown.Controllers.ProfileMenuController;
 import com.tillDown.Main;
 import com.tillDown.Models.GameAssetManager;
 
+import java.util.*;
+import java.util.List;
+
 public class ProfileMenuView implements Screen {
     private ProfileMenuController controller;
     private Stage stage;
@@ -24,6 +27,7 @@ public class ProfileMenuView implements Screen {
     private Dialog dragAndDropDialog;
     private Skin skin;
     public ProfileMenuView() {
+
         this.controller = new ProfileMenuController(this);
         this.stage = new Stage(new FitViewport(1000,1000));
         skin = GameAssetManager.getGameAssetManager().getSkin();
@@ -90,7 +94,7 @@ public class ProfileMenuView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.GRAY);
+        ScreenUtils.clear(Color.DARK_GRAY);
         stage.act(delta);
         stage.draw();
     }

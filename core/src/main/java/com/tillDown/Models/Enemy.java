@@ -62,7 +62,8 @@ public abstract class Enemy {
     }
     public void update(float playerX, float playerY, float delta) {
         Vector2 direction = new Vector2(playerX, playerY).sub(this.position);
-        int a = moveBack ? -4 : 1;
+        float a = moveBack?-(1/(10*(moveBackTime+0.01f))):1;
+        if (isDead) a=0;
         if (direction.len2() > 0.001f) {
             direction.nor();
             Vector2 velocity = new Vector2(direction).scl(a*speed * delta);
@@ -76,7 +77,7 @@ public abstract class Enemy {
             moveBackTime += delta;
             runTime += delta;
             frame = animation.getKeyFrame(runTime);
-            if (moveBackTime>0.1f){
+            if (moveBackTime>0.3f){
                 moveBack = false;
                 moveBackTime = 0f;
             }

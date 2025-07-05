@@ -11,7 +11,7 @@ public class PlayerController {
     }
 
     public void checkPlayerCollision(Bullet b) {
-        if (Main.getGameView().getController().getPlayer().getBounds().overlaps(b.getBounds())) {
+        if (EnemiesController.rectangleOverlap(Main.getGameView().getController().getPlayer().getBounds(),b.getBounds())) {
             Main.getGameView().getController().getPlayer().getDamage();
             b.setPlayerCollided(true);
         }

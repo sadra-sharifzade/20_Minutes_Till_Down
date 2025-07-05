@@ -2,7 +2,6 @@ package com.tillDown.Models;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.backends.lwjgl3.audio.Wav;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -34,6 +33,7 @@ public class GameAssetManager {
     private Texture circleTexture;
     private Texture ammoTexture;
     private Texture emptyHeartTexture;
+    private Texture playerBulletTexture;
     private Sound shootSound;
     private Sound damageSound;
     private Sound levelUpSound;
@@ -63,6 +63,7 @@ public class GameAssetManager {
         revolverTexture = new Texture("assets/images/weapons/revolver.png");
         smgTexture = new Texture("assets/images/weapons/smg.png");
         bulletTexture = new Texture("assets/images/bullet.png");
+        playerBulletTexture = new Texture("assets/images/playerBullet.png");
         orbTexture = new Texture("assets/images/orb.png");
         circleTexture = new Texture("assets/images/circle.png");
         ammoTexture = new Texture("assets/images/ammo.png");
@@ -177,7 +178,10 @@ public class GameAssetManager {
         else runAnimations.put(heroName,animation);
     }
 
-    public Texture getBulletTexture() {return bulletTexture;}
+    public Texture getBulletTexture(boolean isPlayer) {
+        if (isPlayer) return playerBulletTexture;
+        else return bulletTexture;
+    }
 
     public Texture getShotgunTexture() {return shotgunTexture;}
 

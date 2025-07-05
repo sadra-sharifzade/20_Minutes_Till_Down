@@ -109,7 +109,7 @@ public class PauseMenuView implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.GRAY);
+        ScreenUtils.clear(Color.DARK_GRAY);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();

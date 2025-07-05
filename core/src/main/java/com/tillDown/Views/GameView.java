@@ -111,10 +111,14 @@ public class GameView implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
         if (paused) return;
-        ScreenUtils.clear(Color.GRAY);
+        ScreenUtils.clear(Color.DARK_GRAY);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         gameViewport.apply();
         camera.position.set(controller.getPlayer().getX(), controller.getPlayer().getY(), 0);
+        if (camera.position.x <= gameViewport.getScreenWidth()/4) camera.position.x =  gameViewport.getScreenWidth() /4;
+        else if (camera.position.x >= background.getWidth()- gameViewport.getScreenWidth() /4) camera.position.x =  background.getWidth()- gameViewport.getScreenWidth() /4;
+        if (camera.position.y <=  gameViewport.getScreenHeight() /4) camera.position.y =  gameViewport.getScreenHeight() /4;
+        else if (camera.position.y >= background.getHeight()- gameViewport.getScreenHeight() /4) camera.position.y =  background.getHeight()- gameViewport.getScreenHeight() /4;
         camera.update();
         timeRemaining -= delta;
         xpBar.setValue(controller.getPlayer().getLevelPercentage());
@@ -211,7 +215,7 @@ public class GameView implements Screen, InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         controller.getWeaponController().handleWeaponShoot(camera.position.x - camera.viewportWidth / 2 + screenX,
                                                            camera.position.y + camera.viewportHeight / 2 - screenY,
-                                                           camera.position.x, camera.position.y);
+                                                           controller.getPlayer().getX(), controller.getPlayer().getY());
         return false;
     }
 
